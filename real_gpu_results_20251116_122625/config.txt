@@ -1,0 +1,10 @@
+Timestamp: 20251116_122625
+GPU Types: v100 a100 mi210
+Learning Rates: 1e-3,3e-3,1e-2
+Sub Scales: 1e-3,1e-4,1e-5
+Max Steps: 3000
+Batch Size: 32
+Seeds per config: 3
+Partition: coc-gpu
+QOS: coc-ice
+Job Time: 02:00:00

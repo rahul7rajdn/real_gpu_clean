@@ -1,0 +1,21 @@
+---------------------------------------
+Begin Slurm Prolog: Nov-16-2025 12:47:33
+Job ID:    3586038
+User ID:   rn84
+Account:   ece
+Job name:  real_mi210_bf16_lr3e-3_sub1e-4_s1
+Partition: coc-gpu
+QOS:       coc-ice
+---------------------------------------
+---------------------------------------
+Begin Slurm Epilog: Nov-16-2025 12:47:33
+Job ID:        3586038
+User ID:       rn84
+Account:       ece
+Job name:      real_mi210_bf16_lr3e-3_sub1e-4_s1
+Resources:     cpu=2,gres/gpu:mi210=1,mem=8G,node=1
+Rsrc Used:     cput=00:00:08,vmem=0,walltime=00:00:04,mem=10976K,energy_used=0
+Partition:     coc-gpu
+QOS:           coc-ice
+Nodes:         atl1-1-01-005-17-0
+---------------------------------------
