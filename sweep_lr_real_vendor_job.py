@@ -83,6 +83,7 @@ def train_one_config(
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.manual_seed(seed)
     if device.type == "cuda":
+        print("============= hello CUDA ============")
         torch.cuda.manual_seed_all(seed)
 
     amp_dtype, use_amp = pick_precision(precision)
@@ -117,7 +118,7 @@ def train_one_config(
     device_name = (
         torch.cuda.get_device_name(0) if device.type == "cuda" else "cpu"
     )
-
+    # print("device = " + torch.cuda.get_device_name(0))
     losses = []
     diverged = False
     best_loss = float("inf")

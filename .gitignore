@@ -1,0 +1,8 @@
+__pycache__/
+my_plots/
+my_testing/
+my_testing_15000_steps/
+my_testing_30000_steps/
+my_testing_9000_steps/
+testing_3000_steps/
+plots_3000_steps/

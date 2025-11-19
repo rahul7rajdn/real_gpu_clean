@@ -8,6 +8,7 @@ import os
 import pickle
 from typing import Dict, List
 
+import torch
 
 def merge_results(output_dir: str) -> Dict:
     """Load and merge all result files from real GPU jobs."""
@@ -22,13 +23,21 @@ def merge_results(output_dir: str) -> Dict:
         raise ValueError(f"No result files found in {results_dir}. Pattern: {pattern}")
     
     all_results = []
+
     for result_file in result_files:
         try:
-            with open(result_file, "rb") as f:
-                result = pickle.load(f)
-                all_results.append(result)
-        except Exception as e:
-            print(f"Warning: Failed to load {result_file}: {e}")
+            # Try PyTorch loader first
+            result = torch.load(result_file, map_location="cpu")
+            all_results.append(result)
+        except Exception:
+            # Fall back to regular pickle
+            try:
+                with open(result_file, "rb") as f:
+                    result = pickle.load(f)
+                    all_results.append(result)
+            except Exception as e:
+                print(f"Warning: Failed to load {result_file}: {e}")
+
     
     print(f"Loaded {len(all_results)} results from {len(result_files)} files")
     
@@ -41,7 +50,8 @@ def merge_results(output_dir: str) -> Dict:
                 if ":" in line:
                     key, value = line.split(":", 1)
                     config[key.strip()] = value.strip()
-    
+    # print((f"Loaded config from {config_file}: {config}"))
+    # print( f"Total results merged: {len(all_results)}" )
     return {
         "results": all_results,
         "config": config,
