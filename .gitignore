@@ -17,5 +17,5 @@ plots_15000_steps/
 testing_30000_steps/
 plots_30000_steps/
 
-plots*
+
 test_results_*
