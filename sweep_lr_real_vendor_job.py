@@ -141,7 +141,7 @@ def train_one_config(
         device_name = torch.cuda.get_device_properties(0).name
     else:
         device_name = "cpu"
-    # print(" ========> device_name =", device_name)
+    print(" ========> device_name =", device_name)
     losses = []
     diverged = False
     best_loss = float("inf")

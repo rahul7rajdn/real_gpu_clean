@@ -8,7 +8,7 @@ set -e  # stop if any command fails
 # -----------------------------
 MAX_STEPS=${1:-3000}
 
-OUTDIR="./test_results_${MAX_STEPS}_steps/results"
+OUTDIR="./test_results/steps_${MAX_STEPS}/results"
 SEED=1
 SUBSCALE="1e-4"
 

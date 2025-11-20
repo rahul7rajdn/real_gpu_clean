@@ -1,6 +1,6 @@
 (base) [rn84@atl1-1-01-005-17-0 real_gpu_clean]$ 
 (base) [rn84@atl1-1-01-005-17-0 real_gpu_clean]$ ./run_script_mi210.sh 9000                                                                 
-Running sweeps..... max_steps=9000, results ==> ./test_results_9000_steps/results
+Running sweeps..... max_steps=9000, results ==> ./test_results/steps_9000/results
 /tmp/pytorch_rocm_env/bin/python
 
 
@@ -207,7 +207,7 @@ device.type = cuda
 [bf16_mi210] step  8900 | loss 0.5738 | best 0.5237 | lr 0.003 | sub_scale 0.0001 | elapsed 116.7s
 [bf16_mi210] step  8950 | loss 0.5487 | best 0.5237 | lr 0.003 | sub_scale 0.0001 | elapsed 117.2s
 [bf16_mi210] step  9000 | loss 0.6142 | best 0.5173 | lr 0.003 | sub_scale 0.0001 | elapsed 117.8s
-Saved ./test_results_9000_steps/results/result_vendor=bf16_mi210_prec=bf16_lr=0.003_sub=0.0001_seed=1.pkl
+Saved ./test_results/steps_9000/results/result_vendor=bf16_mi210_prec=bf16_lr=0.003_sub=0.0001_seed=1.pkl
  =====================================
 Torch version: 2.6.0.dev20241223+rocm6.1
 CUDA available: True
@@ -397,5 +397,5 @@ device.type = cuda
 [bf16_mi210] step  8900 | loss 2.2407 | best 2.2122 | lr 0.001 | sub_scale 0.0001 | elapsed 116.4s
 [bf16_mi210] step  8950 | loss 2.2179 | best 2.2122 | lr 0.001 | sub_scale 0.0001 | elapsed 117.0s
 [bf16_mi210] step  9000 | loss 2.2201 | best 2.2090 | lr 0.001 | sub_scale 0.0001 | elapsed 117.5s
-Saved ./test_results_9000_steps/results/result_vendor=bf16_mi210_prec=bf16_lr=0.001_sub=0.0001_seed=1.pkl
+Saved ./test_results/steps_9000/results/result_vendor=bf16_mi210_prec=bf16_lr=0.001_sub=0.0001_seed=1.pkl
  =====================================

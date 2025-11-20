@@ -18,8 +18,8 @@ Minimal codebase for running floating-point format experiments on real GPU hardw
 
 ### Remove results
 ```
-rm -rf testing_3000_steps/
-rm -rf plots_3000_steps/
+rm -rf test_results/steps_3000/
+rm -rf plots/steps_3000/
 ```
 
 
@@ -52,13 +52,13 @@ export USER=<your user name>
 ./run_script_mi210.sh 3000
 ```
 
-Output: ![refer_output_mi210.png](./refer_output_mi210.png)
-Output: ![refer_output_mi210.txt](./refer_output_mi210.txt)
+Reference Output: ![refer_output_mi210.png](./test_results/refer_output_mi210.png)
+Full Output: ![refer_full_output_mi210.txt](./test_results/refer_full_output_mi210.txt)
 
 ##### Note:
  - there are 6 runs in the above script (3 fp16 + 3 bf16);
  - Comment the runs if required
- - results written to "testing_3000_steps/results/"
+ - results written to "test_results/steps_3000/results/"
 
 
 
@@ -67,10 +67,10 @@ Output: ![refer_output_mi210.txt](./refer_output_mi210.txt)
 ```
 module load pytorch
 
-PYTHONNOUSERSITE=1 python merge_real_gpu_results.py --output-dir  test_results_3000_steps/
+PYTHONNOUSERSITE=1 python merge_real_gpu_results.py --output-dir  test_results/steps_3000/
 ```
 
 ### Plot graphs
 ```
-python plot_graphs.py --result-file test_results_3000_steps/merged_results.pkl --output-dir plots_3000_steps
+python plot_graphs.py --result-file test_results/steps_3000/merged_results.pkl --output-dir plots/steps_3000
 ```
