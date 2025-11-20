@@ -2,16 +2,29 @@
 
 set -e  # stop if any command fails
 
-OUTDIR="./testing_3000_steps/results"
+# -----------------------------
+# Read max steps from command line
+# Default = 3000
+# -----------------------------
+MAX_STEPS=${1:-3000}
+
+OUTDIR="./test_results_${MAX_STEPS}_steps/results"
 SEED=1
 SUBSCALE="1e-4"
 
-echo "Running sweeps... results → $OUTDIR"
+echo "Running sweeps..... max_steps=${MAX_STEPS}, results ==> $OUTDIR"
 mkdir -p "$OUTDIR"
 
-module load pytorch
+source /tmp/pytorch_rocm_env/bin/activate 
+which python
+
+rocm-smi --showproductname
+
+echo "*****************************************************************"
+
+# module load pytorch
 # -------------------------
-# BF16 on mi210
+# BF16 on MI210
 # -------------------------
 python sweep_lr_real_vendor_job.py \
     --vendor bf16_mi210 \
@@ -19,7 +32,7 @@ python sweep_lr_real_vendor_job.py \
     --lr 0.003 \
     --sub-scale $SUBSCALE \
     --seed $SEED \
-    --max-steps 3000 \
+    --max-steps $MAX_STEPS \
     --output-dir $OUTDIR
 
 python sweep_lr_real_vendor_job.py \
@@ -28,7 +41,7 @@ python sweep_lr_real_vendor_job.py \
     --lr 0.001 \
     --sub-scale $SUBSCALE \
     --seed $SEED \
-    --max-steps 3000 \
+    --max-steps $MAX_STEPS \
     --output-dir $OUTDIR
 
 python sweep_lr_real_vendor_job.py \
@@ -37,19 +50,19 @@ python sweep_lr_real_vendor_job.py \
     --lr 0.01 \
     --sub-scale $SUBSCALE \
     --seed $SEED \
-    --max-steps 3000 \
+    --max-steps $MAX_STEPS \
     --output-dir $OUTDIR
 
-# # -------------------------
-# # FP16 on mi210
-# # -------------------------
+# -------------------------
+# FP16 on MI210
+# -------------------------
 python sweep_lr_real_vendor_job.py \
     --vendor fp16_mi210 \
     --precision fp16 \
     --lr 0.003 \
     --sub-scale $SUBSCALE \
     --seed $SEED \
-    --max-steps 3000 \
+    --max-steps $MAX_STEPS \
     --output-dir $OUTDIR
 
 python sweep_lr_real_vendor_job.py \
@@ -58,7 +71,7 @@ python sweep_lr_real_vendor_job.py \
     --lr 0.001 \
     --sub-scale $SUBSCALE \
     --seed $SEED \
-    --max-steps 3000 \
+    --max-steps $MAX_STEPS \
     --output-dir $OUTDIR
 
 python sweep_lr_real_vendor_job.py \
@@ -67,8 +80,7 @@ python sweep_lr_real_vendor_job.py \
     --lr 0.01 \
     --sub-scale $SUBSCALE \
     --seed $SEED \
-    --max-steps 3000 \
+    --max-steps $MAX_STEPS \
     --output-dir $OUTDIR
 
-echo "All sweeps completed!"
-
+echo "================All sweeps completed on MI210!======================"

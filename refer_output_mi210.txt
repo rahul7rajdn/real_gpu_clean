@@ -1,0 +1,401 @@
+(base) [rn84@atl1-1-01-005-17-0 real_gpu_clean]$ 
+(base) [rn84@atl1-1-01-005-17-0 real_gpu_clean]$ ./run_script_mi210.sh 9000                                                                 
+Running sweeps..... max_steps=9000, results ==> ./test_results_9000_steps/results
+/tmp/pytorch_rocm_env/bin/python
+
+
+============================ ROCm System Management Interface ============================
+====================================== Product Info ======================================
+GPU[0]          : Card Series:          Instinct MI210
+GPU[0]          : Card Model:           0x740f
+GPU[0]          : Card Vendor:          Advanced Micro Devices, Inc. [AMD/ATI]
+GPU[0]          : Card SKU:             D67301V
+GPU[0]          : Subsystem ID:         0x0c34
+GPU[0]          : Device Rev:           0x02
+GPU[0]          : Node ID:              9
+GPU[0]          : GUID:                 32693
+GPU[0]          : GFX Version:          gfx9010
+==========================================================================================
+================================== End of ROCm SMI Log ===================================
+*****************************************************************
+ =====================================
+Torch version: 2.6.0.dev20241223+rocm6.1
+CUDA available: True
+GPU device_name ==> AMD Instinct MI210
+ =====================================
+torch device = cuda
+device.type = cuda
+============= hello CUDA ============
+[bf16_mi210] step     1 | loss 3.4531 | best 3.4531 | lr 0.003 | sub_scale 0.0001 | elapsed 15.4s
+[bf16_mi210] step    50 | loss 3.3305 | best 3.3305 | lr 0.003 | sub_scale 0.0001 | elapsed 16.0s
+[bf16_mi210] step   100 | loss 3.2288 | best 3.2288 | lr 0.003 | sub_scale 0.0001 | elapsed 16.6s
+[bf16_mi210] step   150 | loss 3.1508 | best 3.1480 | lr 0.003 | sub_scale 0.0001 | elapsed 17.1s
+[bf16_mi210] step   200 | loss 3.0874 | best 3.0802 | lr 0.003 | sub_scale 0.0001 | elapsed 17.7s
+[bf16_mi210] step   250 | loss 3.0322 | best 3.0322 | lr 0.003 | sub_scale 0.0001 | elapsed 18.3s
+[bf16_mi210] step   300 | loss 2.9945 | best 2.9941 | lr 0.003 | sub_scale 0.0001 | elapsed 18.8s
+[bf16_mi210] step   350 | loss 2.9866 | best 2.9732 | lr 0.003 | sub_scale 0.0001 | elapsed 19.4s
+[bf16_mi210] step   400 | loss 2.9531 | best 2.9531 | lr 0.003 | sub_scale 0.0001 | elapsed 20.0s
+[bf16_mi210] step   450 | loss 2.9504 | best 2.9388 | lr 0.003 | sub_scale 0.0001 | elapsed 20.5s
+[bf16_mi210] step   500 | loss 2.9482 | best 2.9122 | lr 0.003 | sub_scale 0.0001 | elapsed 21.1s
+[bf16_mi210] step   550 | loss 2.9332 | best 2.9122 | lr 0.003 | sub_scale 0.0001 | elapsed 21.7s
+[bf16_mi210] step   600 | loss 2.9109 | best 2.9041 | lr 0.003 | sub_scale 0.0001 | elapsed 22.2s
+[bf16_mi210] step   650 | loss 2.9267 | best 2.9009 | lr 0.003 | sub_scale 0.0001 | elapsed 22.8s
+[bf16_mi210] step   700 | loss 2.9068 | best 2.8989 | lr 0.003 | sub_scale 0.0001 | elapsed 23.4s
+[bf16_mi210] step   750 | loss 2.9099 | best 2.8940 | lr 0.003 | sub_scale 0.0001 | elapsed 23.9s
+[bf16_mi210] step   800 | loss 2.9298 | best 2.8916 | lr 0.003 | sub_scale 0.0001 | elapsed 24.5s
+[bf16_mi210] step   850 | loss 2.9195 | best 2.8880 | lr 0.003 | sub_scale 0.0001 | elapsed 25.1s
+[bf16_mi210] step   900 | loss 2.9070 | best 2.8880 | lr 0.003 | sub_scale 0.0001 | elapsed 25.7s
+[bf16_mi210] step   950 | loss 2.9018 | best 2.8841 | lr 0.003 | sub_scale 0.0001 | elapsed 26.2s
+[bf16_mi210] step  1000 | loss 2.8999 | best 2.8698 | lr 0.003 | sub_scale 0.0001 | elapsed 26.8s
+[bf16_mi210] step  1050 | loss 2.8650 | best 2.8445 | lr 0.003 | sub_scale 0.0001 | elapsed 27.4s
+[bf16_mi210] step  1100 | loss 2.8476 | best 2.8271 | lr 0.003 | sub_scale 0.0001 | elapsed 27.9s
+[bf16_mi210] step  1150 | loss 2.8297 | best 2.8106 | lr 0.003 | sub_scale 0.0001 | elapsed 28.5s
+[bf16_mi210] step  1200 | loss 2.7951 | best 2.7951 | lr 0.003 | sub_scale 0.0001 | elapsed 29.1s
+[bf16_mi210] step  1250 | loss 2.8153 | best 2.7821 | lr 0.003 | sub_scale 0.0001 | elapsed 29.6s
+[bf16_mi210] step  1300 | loss 2.7877 | best 2.7507 | lr 0.003 | sub_scale 0.0001 | elapsed 30.2s
+[bf16_mi210] step  1350 | loss 2.7326 | best 2.7283 | lr 0.003 | sub_scale 0.0001 | elapsed 30.8s
+[bf16_mi210] step  1400 | loss 2.7170 | best 2.7064 | lr 0.003 | sub_scale 0.0001 | elapsed 31.3s
+[bf16_mi210] step  1450 | loss 2.6883 | best 2.6803 | lr 0.003 | sub_scale 0.0001 | elapsed 31.9s
+[bf16_mi210] step  1500 | loss 2.6679 | best 2.6460 | lr 0.003 | sub_scale 0.0001 | elapsed 32.5s
+[bf16_mi210] step  1550 | loss 2.6398 | best 2.6293 | lr 0.003 | sub_scale 0.0001 | elapsed 33.1s
+[bf16_mi210] step  1600 | loss 2.6115 | best 2.6093 | lr 0.003 | sub_scale 0.0001 | elapsed 33.6s
+[bf16_mi210] step  1650 | loss 2.6029 | best 2.5777 | lr 0.003 | sub_scale 0.0001 | elapsed 34.2s
+[bf16_mi210] step  1700 | loss 2.5783 | best 2.5509 | lr 0.003 | sub_scale 0.0001 | elapsed 34.8s
+[bf16_mi210] step  1750 | loss 2.5532 | best 2.5204 | lr 0.003 | sub_scale 0.0001 | elapsed 35.3s
+[bf16_mi210] step  1800 | loss 2.5027 | best 2.5027 | lr 0.003 | sub_scale 0.0001 | elapsed 35.9s
+[bf16_mi210] step  1850 | loss 2.4944 | best 2.4694 | lr 0.003 | sub_scale 0.0001 | elapsed 36.5s
+[bf16_mi210] step  1900 | loss 2.4317 | best 2.4317 | lr 0.003 | sub_scale 0.0001 | elapsed 37.1s
+[bf16_mi210] step  1950 | loss 2.4309 | best 2.4243 | lr 0.003 | sub_scale 0.0001 | elapsed 37.6s
+[bf16_mi210] step  2000 | loss 2.4044 | best 2.3840 | lr 0.003 | sub_scale 0.0001 | elapsed 38.2s
+[bf16_mi210] step  2050 | loss 2.3827 | best 2.3571 | lr 0.003 | sub_scale 0.0001 | elapsed 38.8s
+[bf16_mi210] step  2100 | loss 2.3657 | best 2.3297 | lr 0.003 | sub_scale 0.0001 | elapsed 39.3s
+[bf16_mi210] step  2150 | loss 2.3315 | best 2.3042 | lr 0.003 | sub_scale 0.0001 | elapsed 39.9s
+[bf16_mi210] step  2200 | loss 2.3044 | best 2.2834 | lr 0.003 | sub_scale 0.0001 | elapsed 40.5s
+[bf16_mi210] step  2250 | loss 2.2616 | best 2.2416 | lr 0.003 | sub_scale 0.0001 | elapsed 41.0s
+[bf16_mi210] step  2300 | loss 2.2432 | best 2.2335 | lr 0.003 | sub_scale 0.0001 | elapsed 41.6s
+[bf16_mi210] step  2350 | loss 2.2362 | best 2.2038 | lr 0.003 | sub_scale 0.0001 | elapsed 42.2s
+[bf16_mi210] step  2400 | loss 2.2224 | best 2.1671 | lr 0.003 | sub_scale 0.0001 | elapsed 42.7s
+[bf16_mi210] step  2450 | loss 2.1697 | best 2.1404 | lr 0.003 | sub_scale 0.0001 | elapsed 43.3s
+[bf16_mi210] step  2500 | loss 2.2006 | best 2.1285 | lr 0.003 | sub_scale 0.0001 | elapsed 43.9s
+[bf16_mi210] step  2550 | loss 2.0780 | best 2.0780 | lr 0.003 | sub_scale 0.0001 | elapsed 44.4s
+[bf16_mi210] step  2600 | loss 2.1221 | best 2.0665 | lr 0.003 | sub_scale 0.0001 | elapsed 45.0s
+[bf16_mi210] step  2650 | loss 2.0759 | best 2.0509 | lr 0.003 | sub_scale 0.0001 | elapsed 45.6s
+[bf16_mi210] step  2700 | loss 2.0433 | best 2.0169 | lr 0.003 | sub_scale 0.0001 | elapsed 46.2s
+[bf16_mi210] step  2750 | loss 2.0071 | best 2.0018 | lr 0.003 | sub_scale 0.0001 | elapsed 46.7s
+[bf16_mi210] step  2800 | loss 1.9969 | best 1.9621 | lr 0.003 | sub_scale 0.0001 | elapsed 47.3s
+[bf16_mi210] step  2850 | loss 2.0142 | best 1.9443 | lr 0.003 | sub_scale 0.0001 | elapsed 47.9s
+[bf16_mi210] step  2900 | loss 1.9829 | best 1.9173 | lr 0.003 | sub_scale 0.0001 | elapsed 48.4s
+[bf16_mi210] step  2950 | loss 1.9464 | best 1.8872 | lr 0.003 | sub_scale 0.0001 | elapsed 49.0s
+[bf16_mi210] step  3000 | loss 1.9477 | best 1.8771 | lr 0.003 | sub_scale 0.0001 | elapsed 49.6s
+[bf16_mi210] step  3050 | loss 1.8869 | best 1.8476 | lr 0.003 | sub_scale 0.0001 | elapsed 50.1s
+[bf16_mi210] step  3100 | loss 1.8720 | best 1.8020 | lr 0.003 | sub_scale 0.0001 | elapsed 50.7s
+[bf16_mi210] step  3150 | loss 1.8567 | best 1.8018 | lr 0.003 | sub_scale 0.0001 | elapsed 51.3s
+[bf16_mi210] step  3200 | loss 1.8087 | best 1.7787 | lr 0.003 | sub_scale 0.0001 | elapsed 51.8s
+[bf16_mi210] step  3250 | loss 1.7779 | best 1.7746 | lr 0.003 | sub_scale 0.0001 | elapsed 52.4s
+[bf16_mi210] step  3300 | loss 1.7548 | best 1.7421 | lr 0.003 | sub_scale 0.0001 | elapsed 53.0s
+[bf16_mi210] step  3350 | loss 1.7755 | best 1.7324 | lr 0.003 | sub_scale 0.0001 | elapsed 53.5s
+[bf16_mi210] step  3400 | loss 1.7348 | best 1.6788 | lr 0.003 | sub_scale 0.0001 | elapsed 54.1s
+[bf16_mi210] step  3450 | loss 1.6923 | best 1.6768 | lr 0.003 | sub_scale 0.0001 | elapsed 54.7s
+[bf16_mi210] step  3500 | loss 1.7473 | best 1.6768 | lr 0.003 | sub_scale 0.0001 | elapsed 55.3s
+[bf16_mi210] step  3550 | loss 1.6565 | best 1.6075 | lr 0.003 | sub_scale 0.0001 | elapsed 55.8s
+[bf16_mi210] step  3600 | loss 1.6845 | best 1.6075 | lr 0.003 | sub_scale 0.0001 | elapsed 56.4s
+[bf16_mi210] step  3650 | loss 1.6337 | best 1.5852 | lr 0.003 | sub_scale 0.0001 | elapsed 57.0s
+[bf16_mi210] step  3700 | loss 1.6603 | best 1.5628 | lr 0.003 | sub_scale 0.0001 | elapsed 57.5s
+[bf16_mi210] step  3750 | loss 1.5702 | best 1.5628 | lr 0.003 | sub_scale 0.0001 | elapsed 58.1s
+[bf16_mi210] step  3800 | loss 1.6089 | best 1.5329 | lr 0.003 | sub_scale 0.0001 | elapsed 58.7s
+[bf16_mi210] step  3850 | loss 1.5824 | best 1.5088 | lr 0.003 | sub_scale 0.0001 | elapsed 59.2s
+[bf16_mi210] step  3900 | loss 1.5139 | best 1.4870 | lr 0.003 | sub_scale 0.0001 | elapsed 59.8s
+[bf16_mi210] step  3950 | loss 1.5566 | best 1.4578 | lr 0.003 | sub_scale 0.0001 | elapsed 60.4s
+[bf16_mi210] step  4000 | loss 1.5044 | best 1.4578 | lr 0.003 | sub_scale 0.0001 | elapsed 61.0s
+[bf16_mi210] step  4050 | loss 1.4483 | best 1.4455 | lr 0.003 | sub_scale 0.0001 | elapsed 61.5s
+[bf16_mi210] step  4100 | loss 1.4673 | best 1.4176 | lr 0.003 | sub_scale 0.0001 | elapsed 62.1s
+[bf16_mi210] step  4150 | loss 1.4151 | best 1.3916 | lr 0.003 | sub_scale 0.0001 | elapsed 62.7s
+[bf16_mi210] step  4200 | loss 1.4614 | best 1.3827 | lr 0.003 | sub_scale 0.0001 | elapsed 63.2s
+[bf16_mi210] step  4250 | loss 1.4014 | best 1.3604 | lr 0.003 | sub_scale 0.0001 | elapsed 63.8s
+[bf16_mi210] step  4300 | loss 1.4187 | best 1.3334 | lr 0.003 | sub_scale 0.0001 | elapsed 64.4s
+[bf16_mi210] step  4350 | loss 1.3631 | best 1.3326 | lr 0.003 | sub_scale 0.0001 | elapsed 64.9s
+[bf16_mi210] step  4400 | loss 1.4100 | best 1.3180 | lr 0.003 | sub_scale 0.0001 | elapsed 65.5s
+[bf16_mi210] step  4450 | loss 1.3659 | best 1.3047 | lr 0.003 | sub_scale 0.0001 | elapsed 66.1s
+[bf16_mi210] step  4500 | loss 1.3529 | best 1.2852 | lr 0.003 | sub_scale 0.0001 | elapsed 66.6s
+[bf16_mi210] step  4550 | loss 1.3245 | best 1.2726 | lr 0.003 | sub_scale 0.0001 | elapsed 67.2s
+[bf16_mi210] step  4600 | loss 1.3181 | best 1.2630 | lr 0.003 | sub_scale 0.0001 | elapsed 67.8s
+[bf16_mi210] step  4650 | loss 1.2917 | best 1.2315 | lr 0.003 | sub_scale 0.0001 | elapsed 68.3s
+[bf16_mi210] step  4700 | loss 1.2776 | best 1.2291 | lr 0.003 | sub_scale 0.0001 | elapsed 68.9s
+[bf16_mi210] step  4750 | loss 1.2349 | best 1.1909 | lr 0.003 | sub_scale 0.0001 | elapsed 69.5s
+[bf16_mi210] step  4800 | loss 1.2367 | best 1.1887 | lr 0.003 | sub_scale 0.0001 | elapsed 70.0s
+[bf16_mi210] step  4850 | loss 1.2354 | best 1.1812 | lr 0.003 | sub_scale 0.0001 | elapsed 70.6s
+[bf16_mi210] step  4900 | loss 1.2617 | best 1.1767 | lr 0.003 | sub_scale 0.0001 | elapsed 71.2s
+[bf16_mi210] step  4950 | loss 1.2336 | best 1.1462 | lr 0.003 | sub_scale 0.0001 | elapsed 71.8s
+[bf16_mi210] step  5000 | loss 1.2592 | best 1.1462 | lr 0.003 | sub_scale 0.0001 | elapsed 72.3s
+[bf16_mi210] step  5050 | loss 1.1186 | best 1.1186 | lr 0.003 | sub_scale 0.0001 | elapsed 72.9s
+[bf16_mi210] step  5100 | loss 1.1831 | best 1.1088 | lr 0.003 | sub_scale 0.0001 | elapsed 73.5s
+[bf16_mi210] step  5150 | loss 1.1768 | best 1.0817 | lr 0.003 | sub_scale 0.0001 | elapsed 74.0s
+[bf16_mi210] step  5200 | loss 1.1746 | best 1.0817 | lr 0.003 | sub_scale 0.0001 | elapsed 74.6s
+[bf16_mi210] step  5250 | loss 1.1253 | best 1.0649 | lr 0.003 | sub_scale 0.0001 | elapsed 75.2s
+[bf16_mi210] step  5300 | loss 1.1281 | best 1.0421 | lr 0.003 | sub_scale 0.0001 | elapsed 75.7s
+[bf16_mi210] step  5350 | loss 1.1581 | best 1.0421 | lr 0.003 | sub_scale 0.0001 | elapsed 76.3s
+[bf16_mi210] step  5400 | loss 1.0971 | best 1.0421 | lr 0.003 | sub_scale 0.0001 | elapsed 76.9s
+[bf16_mi210] step  5450 | loss 1.0586 | best 1.0230 | lr 0.003 | sub_scale 0.0001 | elapsed 77.4s
+[bf16_mi210] step  5500 | loss 1.0789 | best 1.0059 | lr 0.003 | sub_scale 0.0001 | elapsed 78.0s
+[bf16_mi210] step  5550 | loss 1.0899 | best 0.9875 | lr 0.003 | sub_scale 0.0001 | elapsed 78.6s
+[bf16_mi210] step  5600 | loss 1.0070 | best 0.9875 | lr 0.003 | sub_scale 0.0001 | elapsed 79.1s
+[bf16_mi210] step  5650 | loss 1.0052 | best 0.9784 | lr 0.003 | sub_scale 0.0001 | elapsed 79.7s
+[bf16_mi210] step  5700 | loss 1.0978 | best 0.9668 | lr 0.003 | sub_scale 0.0001 | elapsed 80.3s
+[bf16_mi210] step  5750 | loss 0.9881 | best 0.9668 | lr 0.003 | sub_scale 0.0001 | elapsed 80.9s
+[bf16_mi210] step  5800 | loss 0.9972 | best 0.9364 | lr 0.003 | sub_scale 0.0001 | elapsed 81.4s
+[bf16_mi210] step  5850 | loss 0.9807 | best 0.9261 | lr 0.003 | sub_scale 0.0001 | elapsed 82.0s
+[bf16_mi210] step  5900 | loss 0.9555 | best 0.9261 | lr 0.003 | sub_scale 0.0001 | elapsed 82.6s
+[bf16_mi210] step  5950 | loss 1.0112 | best 0.9090 | lr 0.003 | sub_scale 0.0001 | elapsed 83.1s
+[bf16_mi210] step  6000 | loss 0.9810 | best 0.9085 | lr 0.003 | sub_scale 0.0001 | elapsed 83.7s
+[bf16_mi210] step  6050 | loss 0.9585 | best 0.9085 | lr 0.003 | sub_scale 0.0001 | elapsed 84.3s
+[bf16_mi210] step  6100 | loss 0.9399 | best 0.8934 | lr 0.003 | sub_scale 0.0001 | elapsed 84.8s
+[bf16_mi210] step  6150 | loss 0.9147 | best 0.8701 | lr 0.003 | sub_scale 0.0001 | elapsed 85.4s
+[bf16_mi210] step  6200 | loss 0.9149 | best 0.8406 | lr 0.003 | sub_scale 0.0001 | elapsed 86.0s
+[bf16_mi210] step  6250 | loss 0.9642 | best 0.8406 | lr 0.003 | sub_scale 0.0001 | elapsed 86.5s
+[bf16_mi210] step  6300 | loss 0.9484 | best 0.8406 | lr 0.003 | sub_scale 0.0001 | elapsed 87.1s
+[bf16_mi210] step  6350 | loss 0.8738 | best 0.8263 | lr 0.003 | sub_scale 0.0001 | elapsed 87.7s
+[bf16_mi210] step  6400 | loss 0.8466 | best 0.8263 | lr 0.003 | sub_scale 0.0001 | elapsed 88.2s
+[bf16_mi210] step  6450 | loss 0.9362 | best 0.8263 | lr 0.003 | sub_scale 0.0001 | elapsed 88.8s
+[bf16_mi210] step  6500 | loss 0.8939 | best 0.8263 | lr 0.003 | sub_scale 0.0001 | elapsed 89.4s
+[bf16_mi210] step  6550 | loss 0.8499 | best 0.8087 | lr 0.003 | sub_scale 0.0001 | elapsed 90.0s
+[bf16_mi210] step  6600 | loss 0.8805 | best 0.8087 | lr 0.003 | sub_scale 0.0001 | elapsed 90.5s
+[bf16_mi210] step  6650 | loss 0.8409 | best 0.8087 | lr 0.003 | sub_scale 0.0001 | elapsed 91.1s
+[bf16_mi210] step  6700 | loss 0.8449 | best 0.7938 | lr 0.003 | sub_scale 0.0001 | elapsed 91.7s
+[bf16_mi210] step  6750 | loss 0.8019 | best 0.7802 | lr 0.003 | sub_scale 0.0001 | elapsed 92.2s
+[bf16_mi210] step  6800 | loss 0.8302 | best 0.7673 | lr 0.003 | sub_scale 0.0001 | elapsed 92.8s
+[bf16_mi210] step  6850 | loss 0.8432 | best 0.7673 | lr 0.003 | sub_scale 0.0001 | elapsed 93.4s
+[bf16_mi210] step  6900 | loss 0.8364 | best 0.7673 | lr 0.003 | sub_scale 0.0001 | elapsed 93.9s
+[bf16_mi210] step  6950 | loss 0.7708 | best 0.7323 | lr 0.003 | sub_scale 0.0001 | elapsed 94.5s
+[bf16_mi210] step  7000 | loss 0.8583 | best 0.7323 | lr 0.003 | sub_scale 0.0001 | elapsed 95.1s
+[bf16_mi210] step  7050 | loss 0.7550 | best 0.7323 | lr 0.003 | sub_scale 0.0001 | elapsed 95.6s
+[bf16_mi210] step  7100 | loss 0.7576 | best 0.7198 | lr 0.003 | sub_scale 0.0001 | elapsed 96.2s
+[bf16_mi210] step  7150 | loss 0.8258 | best 0.7198 | lr 0.003 | sub_scale 0.0001 | elapsed 96.8s
+[bf16_mi210] step  7200 | loss 0.8048 | best 0.7198 | lr 0.003 | sub_scale 0.0001 | elapsed 97.3s
+[bf16_mi210] step  7250 | loss 1.1499 | best 0.7066 | lr 0.003 | sub_scale 0.0001 | elapsed 97.9s
+[bf16_mi210] step  7300 | loss 0.8364 | best 0.7066 | lr 0.003 | sub_scale 0.0001 | elapsed 98.5s
+[bf16_mi210] step  7350 | loss 0.7466 | best 0.7066 | lr 0.003 | sub_scale 0.0001 | elapsed 99.0s
+[bf16_mi210] step  7400 | loss 0.8047 | best 0.6695 | lr 0.003 | sub_scale 0.0001 | elapsed 99.6s
+[bf16_mi210] step  7450 | loss 0.7366 | best 0.6695 | lr 0.003 | sub_scale 0.0001 | elapsed 100.2s
+[bf16_mi210] step  7500 | loss 0.7248 | best 0.6695 | lr 0.003 | sub_scale 0.0001 | elapsed 100.8s
+[bf16_mi210] step  7550 | loss 0.7049 | best 0.6695 | lr 0.003 | sub_scale 0.0001 | elapsed 101.3s
+[bf16_mi210] step  7600 | loss 0.8408 | best 0.6695 | lr 0.003 | sub_scale 0.0001 | elapsed 101.9s
+[bf16_mi210] step  7650 | loss 0.7033 | best 0.6695 | lr 0.003 | sub_scale 0.0001 | elapsed 102.5s
+[bf16_mi210] step  7700 | loss 0.6910 | best 0.6576 | lr 0.003 | sub_scale 0.0001 | elapsed 103.0s
+[bf16_mi210] step  7750 | loss 0.6808 | best 0.6565 | lr 0.003 | sub_scale 0.0001 | elapsed 103.6s
+[bf16_mi210] step  7800 | loss 0.6792 | best 0.6565 | lr 0.003 | sub_scale 0.0001 | elapsed 104.2s
+[bf16_mi210] step  7850 | loss 0.6718 | best 0.6369 | lr 0.003 | sub_scale 0.0001 | elapsed 104.7s
+[bf16_mi210] step  7900 | loss 0.6840 | best 0.6339 | lr 0.003 | sub_scale 0.0001 | elapsed 105.3s
+[bf16_mi210] step  7950 | loss 0.6840 | best 0.6296 | lr 0.003 | sub_scale 0.0001 | elapsed 105.9s
+[bf16_mi210] step  8000 | loss 0.8195 | best 0.6296 | lr 0.003 | sub_scale 0.0001 | elapsed 106.4s
+[bf16_mi210] step  8050 | loss 0.6242 | best 0.6242 | lr 0.003 | sub_scale 0.0001 | elapsed 107.0s
+[bf16_mi210] step  8100 | loss 0.6635 | best 0.6044 | lr 0.003 | sub_scale 0.0001 | elapsed 107.6s
+[bf16_mi210] step  8150 | loss 0.6401 | best 0.6044 | lr 0.003 | sub_scale 0.0001 | elapsed 108.1s
+[bf16_mi210] step  8200 | loss 0.6798 | best 0.6044 | lr 0.003 | sub_scale 0.0001 | elapsed 108.7s
+[bf16_mi210] step  8250 | loss 0.6342 | best 0.5922 | lr 0.003 | sub_scale 0.0001 | elapsed 109.3s
+[bf16_mi210] step  8300 | loss 0.6309 | best 0.5889 | lr 0.003 | sub_scale 0.0001 | elapsed 109.8s
+[bf16_mi210] step  8350 | loss 0.6761 | best 0.5855 | lr 0.003 | sub_scale 0.0001 | elapsed 110.4s
+[bf16_mi210] step  8400 | loss 0.6561 | best 0.5855 | lr 0.003 | sub_scale 0.0001 | elapsed 111.0s
+[bf16_mi210] step  8450 | loss 0.7157 | best 0.5855 | lr 0.003 | sub_scale 0.0001 | elapsed 111.6s
+[bf16_mi210] step  8500 | loss 0.6226 | best 0.5579 | lr 0.003 | sub_scale 0.0001 | elapsed 112.1s
+[bf16_mi210] step  8550 | loss 0.6522 | best 0.5579 | lr 0.003 | sub_scale 0.0001 | elapsed 112.7s
+[bf16_mi210] step  8600 | loss 0.6296 | best 0.5400 | lr 0.003 | sub_scale 0.0001 | elapsed 113.3s
+[bf16_mi210] step  8650 | loss 0.5993 | best 0.5400 | lr 0.003 | sub_scale 0.0001 | elapsed 113.8s
+[bf16_mi210] step  8700 | loss 0.7746 | best 0.5400 | lr 0.003 | sub_scale 0.0001 | elapsed 114.4s
+[bf16_mi210] step  8750 | loss 0.6150 | best 0.5400 | lr 0.003 | sub_scale 0.0001 | elapsed 115.0s
+[bf16_mi210] step  8800 | loss 0.5968 | best 0.5362 | lr 0.003 | sub_scale 0.0001 | elapsed 115.5s
+[bf16_mi210] step  8850 | loss 0.6357 | best 0.5362 | lr 0.003 | sub_scale 0.0001 | elapsed 116.1s
+[bf16_mi210] step  8900 | loss 0.5738 | best 0.5237 | lr 0.003 | sub_scale 0.0001 | elapsed 116.7s
+[bf16_mi210] step  8950 | loss 0.5487 | best 0.5237 | lr 0.003 | sub_scale 0.0001 | elapsed 117.2s
+[bf16_mi210] step  9000 | loss 0.6142 | best 0.5173 | lr 0.003 | sub_scale 0.0001 | elapsed 117.8s
+Saved ./test_results_9000_steps/results/result_vendor=bf16_mi210_prec=bf16_lr=0.003_sub=0.0001_seed=1.pkl
+ =====================================
+Torch version: 2.6.0.dev20241223+rocm6.1
+CUDA available: True
+GPU device_name ==> AMD Instinct MI210
+ =====================================
+torch device = cuda
+device.type = cuda
+============= hello CUDA ============
+[bf16_mi210] step     1 | loss 3.4531 | best 3.4531 | lr 0.001 | sub_scale 0.0001 | elapsed 15.5s
+[bf16_mi210] step    50 | loss 3.4091 | best 3.4091 | lr 0.001 | sub_scale 0.0001 | elapsed 16.0s
+[bf16_mi210] step   100 | loss 3.3685 | best 3.3685 | lr 0.001 | sub_scale 0.0001 | elapsed 16.6s
+[bf16_mi210] step   150 | loss 3.3297 | best 3.3297 | lr 0.001 | sub_scale 0.0001 | elapsed 17.2s
+[bf16_mi210] step   200 | loss 3.2945 | best 3.2902 | lr 0.001 | sub_scale 0.0001 | elapsed 17.7s
+[bf16_mi210] step   250 | loss 3.2534 | best 3.2534 | lr 0.001 | sub_scale 0.0001 | elapsed 18.3s
+[bf16_mi210] step   300 | loss 3.2237 | best 3.2207 | lr 0.001 | sub_scale 0.0001 | elapsed 18.9s
+[bf16_mi210] step   350 | loss 3.2017 | best 3.1971 | lr 0.001 | sub_scale 0.0001 | elapsed 19.5s
+[bf16_mi210] step   400 | loss 3.1699 | best 3.1699 | lr 0.001 | sub_scale 0.0001 | elapsed 20.0s
+[bf16_mi210] step   450 | loss 3.1516 | best 3.1502 | lr 0.001 | sub_scale 0.0001 | elapsed 20.6s
+[bf16_mi210] step   500 | loss 3.1318 | best 3.1157 | lr 0.001 | sub_scale 0.0001 | elapsed 21.2s
+[bf16_mi210] step   550 | loss 3.1099 | best 3.1031 | lr 0.001 | sub_scale 0.0001 | elapsed 21.7s
+[bf16_mi210] step   600 | loss 3.0826 | best 3.0826 | lr 0.001 | sub_scale 0.0001 | elapsed 22.3s
+[bf16_mi210] step   650 | loss 3.0785 | best 3.0606 | lr 0.001 | sub_scale 0.0001 | elapsed 22.9s
+[bf16_mi210] step   700 | loss 3.0502 | best 3.0483 | lr 0.001 | sub_scale 0.0001 | elapsed 23.4s
+[bf16_mi210] step   750 | loss 3.0383 | best 3.0363 | lr 0.001 | sub_scale 0.0001 | elapsed 24.0s
+[bf16_mi210] step   800 | loss 3.0386 | best 3.0209 | lr 0.001 | sub_scale 0.0001 | elapsed 24.6s
+[bf16_mi210] step   850 | loss 3.0245 | best 3.0097 | lr 0.001 | sub_scale 0.0001 | elapsed 25.1s
+[bf16_mi210] step   900 | loss 3.0069 | best 2.9965 | lr 0.001 | sub_scale 0.0001 | elapsed 25.7s
+[bf16_mi210] step   950 | loss 2.9961 | best 2.9873 | lr 0.001 | sub_scale 0.0001 | elapsed 26.3s
+[bf16_mi210] step  1000 | loss 3.0006 | best 2.9772 | lr 0.001 | sub_scale 0.0001 | elapsed 26.9s
+[bf16_mi210] step  1050 | loss 2.9848 | best 2.9706 | lr 0.001 | sub_scale 0.0001 | elapsed 27.4s
+[bf16_mi210] step  1100 | loss 2.9721 | best 2.9572 | lr 0.001 | sub_scale 0.0001 | elapsed 28.0s
+[bf16_mi210] step  1150 | loss 2.9588 | best 2.9475 | lr 0.001 | sub_scale 0.0001 | elapsed 28.6s
+[bf16_mi210] step  1200 | loss 2.9519 | best 2.9475 | lr 0.001 | sub_scale 0.0001 | elapsed 29.1s
+[bf16_mi210] step  1250 | loss 2.9718 | best 2.9444 | lr 0.001 | sub_scale 0.0001 | elapsed 29.7s
+[bf16_mi210] step  1300 | loss 2.9660 | best 2.9408 | lr 0.001 | sub_scale 0.0001 | elapsed 30.3s
+[bf16_mi210] step  1350 | loss 2.9403 | best 2.9270 | lr 0.001 | sub_scale 0.0001 | elapsed 30.8s
+[bf16_mi210] step  1400 | loss 2.9414 | best 2.9270 | lr 0.001 | sub_scale 0.0001 | elapsed 31.4s
+[bf16_mi210] step  1450 | loss 2.9368 | best 2.9270 | lr 0.001 | sub_scale 0.0001 | elapsed 32.0s
+[bf16_mi210] step  1500 | loss 2.9420 | best 2.9214 | lr 0.001 | sub_scale 0.0001 | elapsed 32.5s
+[bf16_mi210] step  1550 | loss 2.9394 | best 2.9195 | lr 0.001 | sub_scale 0.0001 | elapsed 33.1s
+[bf16_mi210] step  1600 | loss 2.9194 | best 2.9126 | lr 0.001 | sub_scale 0.0001 | elapsed 33.7s
+[bf16_mi210] step  1650 | loss 2.9250 | best 2.9095 | lr 0.001 | sub_scale 0.0001 | elapsed 34.2s
+[bf16_mi210] step  1700 | loss 2.9335 | best 2.9080 | lr 0.001 | sub_scale 0.0001 | elapsed 34.8s
+[bf16_mi210] step  1750 | loss 2.9218 | best 2.9076 | lr 0.001 | sub_scale 0.0001 | elapsed 35.4s
+[bf16_mi210] step  1800 | loss 2.9129 | best 2.9005 | lr 0.001 | sub_scale 0.0001 | elapsed 35.9s
+[bf16_mi210] step  1850 | loss 2.9269 | best 2.9005 | lr 0.001 | sub_scale 0.0001 | elapsed 36.5s
+[bf16_mi210] step  1900 | loss 2.9027 | best 2.8981 | lr 0.001 | sub_scale 0.0001 | elapsed 37.1s
+[bf16_mi210] step  1950 | loss 2.9114 | best 2.8981 | lr 0.001 | sub_scale 0.0001 | elapsed 37.6s
+[bf16_mi210] step  2000 | loss 2.9133 | best 2.8976 | lr 0.001 | sub_scale 0.0001 | elapsed 38.2s
+[bf16_mi210] step  2050 | loss 2.9219 | best 2.8941 | lr 0.001 | sub_scale 0.0001 | elapsed 38.8s
+[bf16_mi210] step  2100 | loss 2.9009 | best 2.8865 | lr 0.001 | sub_scale 0.0001 | elapsed 39.4s
+[bf16_mi210] step  2150 | loss 2.9170 | best 2.8865 | lr 0.001 | sub_scale 0.0001 | elapsed 39.9s
+[bf16_mi210] step  2200 | loss 2.9077 | best 2.8865 | lr 0.001 | sub_scale 0.0001 | elapsed 40.5s
+[bf16_mi210] step  2250 | loss 2.9116 | best 2.8865 | lr 0.001 | sub_scale 0.0001 | elapsed 41.1s
+[bf16_mi210] step  2300 | loss 2.9251 | best 2.8865 | lr 0.001 | sub_scale 0.0001 | elapsed 41.6s
+[bf16_mi210] step  2350 | loss 2.9270 | best 2.8865 | lr 0.001 | sub_scale 0.0001 | elapsed 42.2s
+[bf16_mi210] step  2400 | loss 2.9170 | best 2.8865 | lr 0.001 | sub_scale 0.0001 | elapsed 42.8s
+[bf16_mi210] step  2450 | loss 2.9000 | best 2.8854 | lr 0.001 | sub_scale 0.0001 | elapsed 43.3s
+[bf16_mi210] step  2500 | loss 2.9184 | best 2.8792 | lr 0.001 | sub_scale 0.0001 | elapsed 43.9s
+[bf16_mi210] step  2550 | loss 2.9025 | best 2.8792 | lr 0.001 | sub_scale 0.0001 | elapsed 44.5s
+[bf16_mi210] step  2600 | loss 2.9123 | best 2.8792 | lr 0.001 | sub_scale 0.0001 | elapsed 45.0s
+[bf16_mi210] step  2650 | loss 2.9098 | best 2.8792 | lr 0.001 | sub_scale 0.0001 | elapsed 45.6s
+[bf16_mi210] step  2700 | loss 2.8932 | best 2.8792 | lr 0.001 | sub_scale 0.0001 | elapsed 46.2s
+[bf16_mi210] step  2750 | loss 2.9095 | best 2.8792 | lr 0.001 | sub_scale 0.0001 | elapsed 46.7s
+[bf16_mi210] step  2800 | loss 2.9045 | best 2.8792 | lr 0.001 | sub_scale 0.0001 | elapsed 47.3s
+[bf16_mi210] step  2850 | loss 2.8998 | best 2.8788 | lr 0.001 | sub_scale 0.0001 | elapsed 47.9s
+[bf16_mi210] step  2900 | loss 2.8715 | best 2.8715 | lr 0.001 | sub_scale 0.0001 | elapsed 48.4s
+[bf16_mi210] step  2950 | loss 2.8824 | best 2.8636 | lr 0.001 | sub_scale 0.0001 | elapsed 49.0s
+[bf16_mi210] step  3000 | loss 2.8716 | best 2.8606 | lr 0.001 | sub_scale 0.0001 | elapsed 49.6s
+[bf16_mi210] step  3050 | loss 2.8652 | best 2.8505 | lr 0.001 | sub_scale 0.0001 | elapsed 50.2s
+[bf16_mi210] step  3100 | loss 2.8592 | best 2.8505 | lr 0.001 | sub_scale 0.0001 | elapsed 50.7s
+[bf16_mi210] step  3150 | loss 2.8573 | best 2.8445 | lr 0.001 | sub_scale 0.0001 | elapsed 51.3s
+[bf16_mi210] step  3200 | loss 2.8674 | best 2.8339 | lr 0.001 | sub_scale 0.0001 | elapsed 51.9s
+[bf16_mi210] step  3250 | loss 2.8652 | best 2.8339 | lr 0.001 | sub_scale 0.0001 | elapsed 52.4s
+[bf16_mi210] step  3300 | loss 2.8301 | best 2.8301 | lr 0.001 | sub_scale 0.0001 | elapsed 53.0s
+[bf16_mi210] step  3350 | loss 2.8411 | best 2.8169 | lr 0.001 | sub_scale 0.0001 | elapsed 53.6s
+[bf16_mi210] step  3400 | loss 2.8528 | best 2.8169 | lr 0.001 | sub_scale 0.0001 | elapsed 54.1s
+[bf16_mi210] step  3450 | loss 2.8260 | best 2.8142 | lr 0.001 | sub_scale 0.0001 | elapsed 54.7s
+[bf16_mi210] step  3500 | loss 2.8234 | best 2.8142 | lr 0.001 | sub_scale 0.0001 | elapsed 55.3s
+[bf16_mi210] step  3550 | loss 2.8313 | best 2.8067 | lr 0.001 | sub_scale 0.0001 | elapsed 55.8s
+[bf16_mi210] step  3600 | loss 2.8387 | best 2.7979 | lr 0.001 | sub_scale 0.0001 | elapsed 56.4s
+[bf16_mi210] step  3650 | loss 2.8040 | best 2.7941 | lr 0.001 | sub_scale 0.0001 | elapsed 57.0s
+[bf16_mi210] step  3700 | loss 2.8105 | best 2.7941 | lr 0.001 | sub_scale 0.0001 | elapsed 57.5s
+[bf16_mi210] step  3750 | loss 2.8000 | best 2.7846 | lr 0.001 | sub_scale 0.0001 | elapsed 58.1s
+[bf16_mi210] step  3800 | loss 2.7859 | best 2.7826 | lr 0.001 | sub_scale 0.0001 | elapsed 58.7s
+[bf16_mi210] step  3850 | loss 2.7849 | best 2.7637 | lr 0.001 | sub_scale 0.0001 | elapsed 59.2s
+[bf16_mi210] step  3900 | loss 2.7955 | best 2.7623 | lr 0.001 | sub_scale 0.0001 | elapsed 59.8s
+[bf16_mi210] step  3950 | loss 2.7847 | best 2.7597 | lr 0.001 | sub_scale 0.0001 | elapsed 60.4s
+[bf16_mi210] step  4000 | loss 2.7702 | best 2.7504 | lr 0.001 | sub_scale 0.0001 | elapsed 60.9s
+[bf16_mi210] step  4050 | loss 2.7679 | best 2.7462 | lr 0.001 | sub_scale 0.0001 | elapsed 61.5s
+[bf16_mi210] step  4100 | loss 2.7504 | best 2.7427 | lr 0.001 | sub_scale 0.0001 | elapsed 62.1s
+[bf16_mi210] step  4150 | loss 2.7680 | best 2.7427 | lr 0.001 | sub_scale 0.0001 | elapsed 62.6s
+[bf16_mi210] step  4200 | loss 2.7562 | best 2.7298 | lr 0.001 | sub_scale 0.0001 | elapsed 63.2s
+[bf16_mi210] step  4250 | loss 2.7498 | best 2.7245 | lr 0.001 | sub_scale 0.0001 | elapsed 63.8s
+[bf16_mi210] step  4300 | loss 2.7406 | best 2.7132 | lr 0.001 | sub_scale 0.0001 | elapsed 64.3s
+[bf16_mi210] step  4350 | loss 2.7296 | best 2.7132 | lr 0.001 | sub_scale 0.0001 | elapsed 64.9s
+[bf16_mi210] step  4400 | loss 2.7467 | best 2.7132 | lr 0.001 | sub_scale 0.0001 | elapsed 65.5s
+[bf16_mi210] step  4450 | loss 2.7183 | best 2.7058 | lr 0.001 | sub_scale 0.0001 | elapsed 66.0s
+[bf16_mi210] step  4500 | loss 2.7231 | best 2.6963 | lr 0.001 | sub_scale 0.0001 | elapsed 66.6s
+[bf16_mi210] step  4550 | loss 2.7152 | best 2.6913 | lr 0.001 | sub_scale 0.0001 | elapsed 67.1s
+[bf16_mi210] step  4600 | loss 2.6824 | best 2.6824 | lr 0.001 | sub_scale 0.0001 | elapsed 67.7s
+[bf16_mi210] step  4650 | loss 2.7154 | best 2.6824 | lr 0.001 | sub_scale 0.0001 | elapsed 68.3s
+[bf16_mi210] step  4700 | loss 2.6919 | best 2.6778 | lr 0.001 | sub_scale 0.0001 | elapsed 68.8s
+[bf16_mi210] step  4750 | loss 2.6844 | best 2.6674 | lr 0.001 | sub_scale 0.0001 | elapsed 69.4s
+[bf16_mi210] step  4800 | loss 2.6664 | best 2.6624 | lr 0.001 | sub_scale 0.0001 | elapsed 70.0s
+[bf16_mi210] step  4850 | loss 2.6843 | best 2.6526 | lr 0.001 | sub_scale 0.0001 | elapsed 70.5s
+[bf16_mi210] step  4900 | loss 2.6973 | best 2.6488 | lr 0.001 | sub_scale 0.0001 | elapsed 71.1s
+[bf16_mi210] step  4950 | loss 2.6774 | best 2.6488 | lr 0.001 | sub_scale 0.0001 | elapsed 71.7s
+[bf16_mi210] step  5000 | loss 2.6688 | best 2.6379 | lr 0.001 | sub_scale 0.0001 | elapsed 72.2s
+[bf16_mi210] step  5050 | loss 2.6451 | best 2.6379 | lr 0.001 | sub_scale 0.0001 | elapsed 72.8s
+[bf16_mi210] step  5100 | loss 2.6568 | best 2.6292 | lr 0.001 | sub_scale 0.0001 | elapsed 73.4s
+[bf16_mi210] step  5150 | loss 2.6607 | best 2.6277 | lr 0.001 | sub_scale 0.0001 | elapsed 73.9s
+[bf16_mi210] step  5200 | loss 2.6420 | best 2.6161 | lr 0.001 | sub_scale 0.0001 | elapsed 74.5s
+[bf16_mi210] step  5250 | loss 2.6187 | best 2.6074 | lr 0.001 | sub_scale 0.0001 | elapsed 75.1s
+[bf16_mi210] step  5300 | loss 2.6434 | best 2.6026 | lr 0.001 | sub_scale 0.0001 | elapsed 75.6s
+[bf16_mi210] step  5350 | loss 2.6463 | best 2.6026 | lr 0.001 | sub_scale 0.0001 | elapsed 76.2s
+[bf16_mi210] step  5400 | loss 2.6276 | best 2.6026 | lr 0.001 | sub_scale 0.0001 | elapsed 76.8s
+[bf16_mi210] step  5450 | loss 2.6165 | best 2.6026 | lr 0.001 | sub_scale 0.0001 | elapsed 77.3s
+[bf16_mi210] step  5500 | loss 2.6243 | best 2.5753 | lr 0.001 | sub_scale 0.0001 | elapsed 77.9s
+[bf16_mi210] step  5550 | loss 2.6089 | best 2.5753 | lr 0.001 | sub_scale 0.0001 | elapsed 78.5s
+[bf16_mi210] step  5600 | loss 2.5881 | best 2.5725 | lr 0.001 | sub_scale 0.0001 | elapsed 79.0s
+[bf16_mi210] step  5650 | loss 2.5914 | best 2.5725 | lr 0.001 | sub_scale 0.0001 | elapsed 79.6s
+[bf16_mi210] step  5700 | loss 2.6197 | best 2.5720 | lr 0.001 | sub_scale 0.0001 | elapsed 80.2s
+[bf16_mi210] step  5750 | loss 2.5872 | best 2.5653 | lr 0.001 | sub_scale 0.0001 | elapsed 80.7s
+[bf16_mi210] step  5800 | loss 2.5928 | best 2.5627 | lr 0.001 | sub_scale 0.0001 | elapsed 81.3s
+[bf16_mi210] step  5850 | loss 2.5879 | best 2.5524 | lr 0.001 | sub_scale 0.0001 | elapsed 81.9s
+[bf16_mi210] step  5900 | loss 2.5621 | best 2.5524 | lr 0.001 | sub_scale 0.0001 | elapsed 82.4s
+[bf16_mi210] step  5950 | loss 2.5607 | best 2.5448 | lr 0.001 | sub_scale 0.0001 | elapsed 83.0s
+[bf16_mi210] step  6000 | loss 2.5588 | best 2.5287 | lr 0.001 | sub_scale 0.0001 | elapsed 83.6s
+[bf16_mi210] step  6050 | loss 2.5557 | best 2.5287 | lr 0.001 | sub_scale 0.0001 | elapsed 84.1s
+[bf16_mi210] step  6100 | loss 2.5576 | best 2.5287 | lr 0.001 | sub_scale 0.0001 | elapsed 84.7s
+[bf16_mi210] step  6150 | loss 2.5387 | best 2.5143 | lr 0.001 | sub_scale 0.0001 | elapsed 85.3s
+[bf16_mi210] step  6200 | loss 2.5281 | best 2.5108 | lr 0.001 | sub_scale 0.0001 | elapsed 85.8s
+[bf16_mi210] step  6250 | loss 2.5433 | best 2.5108 | lr 0.001 | sub_scale 0.0001 | elapsed 86.4s
+[bf16_mi210] step  6300 | loss 2.5369 | best 2.5005 | lr 0.001 | sub_scale 0.0001 | elapsed 87.0s
+[bf16_mi210] step  6350 | loss 2.5242 | best 2.4931 | lr 0.001 | sub_scale 0.0001 | elapsed 87.5s
+[bf16_mi210] step  6400 | loss 2.5041 | best 2.4931 | lr 0.001 | sub_scale 0.0001 | elapsed 88.1s
+[bf16_mi210] step  6450 | loss 2.5281 | best 2.4931 | lr 0.001 | sub_scale 0.0001 | elapsed 88.7s
+[bf16_mi210] step  6500 | loss 2.4959 | best 2.4798 | lr 0.001 | sub_scale 0.0001 | elapsed 89.2s
+[bf16_mi210] step  6550 | loss 2.4842 | best 2.4758 | lr 0.001 | sub_scale 0.0001 | elapsed 89.8s
+[bf16_mi210] step  6600 | loss 2.5010 | best 2.4702 | lr 0.001 | sub_scale 0.0001 | elapsed 90.4s
+[bf16_mi210] step  6650 | loss 2.4758 | best 2.4653 | lr 0.001 | sub_scale 0.0001 | elapsed 90.9s
+[bf16_mi210] step  6700 | loss 2.4977 | best 2.4601 | lr 0.001 | sub_scale 0.0001 | elapsed 91.5s
+[bf16_mi210] step  6750 | loss 2.4659 | best 2.4590 | lr 0.001 | sub_scale 0.0001 | elapsed 92.1s
+[bf16_mi210] step  6800 | loss 2.4740 | best 2.4460 | lr 0.001 | sub_scale 0.0001 | elapsed 92.6s
+[bf16_mi210] step  6850 | loss 2.4664 | best 2.4451 | lr 0.001 | sub_scale 0.0001 | elapsed 93.2s
+[bf16_mi210] step  6900 | loss 2.4575 | best 2.4360 | lr 0.001 | sub_scale 0.0001 | elapsed 93.8s
+[bf16_mi210] step  6950 | loss 2.4508 | best 2.4319 | lr 0.001 | sub_scale 0.0001 | elapsed 94.3s
+[bf16_mi210] step  7000 | loss 2.4404 | best 2.4181 | lr 0.001 | sub_scale 0.0001 | elapsed 94.9s
+[bf16_mi210] step  7050 | loss 2.4394 | best 2.4157 | lr 0.001 | sub_scale 0.0001 | elapsed 95.5s
+[bf16_mi210] step  7100 | loss 2.4189 | best 2.4112 | lr 0.001 | sub_scale 0.0001 | elapsed 96.0s
+[bf16_mi210] step  7150 | loss 2.4375 | best 2.4112 | lr 0.001 | sub_scale 0.0001 | elapsed 96.6s
+[bf16_mi210] step  7200 | loss 2.4140 | best 2.4009 | lr 0.001 | sub_scale 0.0001 | elapsed 97.2s
+[bf16_mi210] step  7250 | loss 2.3999 | best 2.3999 | lr 0.001 | sub_scale 0.0001 | elapsed 97.7s
+[bf16_mi210] step  7300 | loss 2.4420 | best 2.3805 | lr 0.001 | sub_scale 0.0001 | elapsed 98.3s
+[bf16_mi210] step  7350 | loss 2.4040 | best 2.3805 | lr 0.001 | sub_scale 0.0001 | elapsed 98.8s
+[bf16_mi210] step  7400 | loss 2.3884 | best 2.3805 | lr 0.001 | sub_scale 0.0001 | elapsed 99.4s
+[bf16_mi210] step  7450 | loss 2.4008 | best 2.3696 | lr 0.001 | sub_scale 0.0001 | elapsed 100.0s
+[bf16_mi210] step  7500 | loss 2.3973 | best 2.3696 | lr 0.001 | sub_scale 0.0001 | elapsed 100.5s
+[bf16_mi210] step  7550 | loss 2.3811 | best 2.3644 | lr 0.001 | sub_scale 0.0001 | elapsed 101.1s
+[bf16_mi210] step  7600 | loss 2.3803 | best 2.3526 | lr 0.001 | sub_scale 0.0001 | elapsed 101.7s
+[bf16_mi210] step  7650 | loss 2.3651 | best 2.3498 | lr 0.001 | sub_scale 0.0001 | elapsed 102.2s
+[bf16_mi210] step  7700 | loss 2.3674 | best 2.3485 | lr 0.001 | sub_scale 0.0001 | elapsed 102.8s
+[bf16_mi210] step  7750 | loss 2.3552 | best 2.3452 | lr 0.001 | sub_scale 0.0001 | elapsed 103.4s
+[bf16_mi210] step  7800 | loss 2.3466 | best 2.3340 | lr 0.001 | sub_scale 0.0001 | elapsed 103.9s
+[bf16_mi210] step  7850 | loss 2.3598 | best 2.3311 | lr 0.001 | sub_scale 0.0001 | elapsed 104.5s
+[bf16_mi210] step  7900 | loss 2.3329 | best 2.3288 | lr 0.001 | sub_scale 0.0001 | elapsed 105.1s
+[bf16_mi210] step  7950 | loss 2.3453 | best 2.3149 | lr 0.001 | sub_scale 0.0001 | elapsed 105.6s
+[bf16_mi210] step  8000 | loss 2.3218 | best 2.3149 | lr 0.001 | sub_scale 0.0001 | elapsed 106.2s
+[bf16_mi210] step  8050 | loss 2.3249 | best 2.3134 | lr 0.001 | sub_scale 0.0001 | elapsed 106.8s
+[bf16_mi210] step  8100 | loss 2.3318 | best 2.2955 | lr 0.001 | sub_scale 0.0001 | elapsed 107.3s
+[bf16_mi210] step  8150 | loss 2.3093 | best 2.2927 | lr 0.001 | sub_scale 0.0001 | elapsed 107.9s
+[bf16_mi210] step  8200 | loss 2.3037 | best 2.2927 | lr 0.001 | sub_scale 0.0001 | elapsed 108.5s
+[bf16_mi210] step  8250 | loss 2.3141 | best 2.2855 | lr 0.001 | sub_scale 0.0001 | elapsed 109.0s
+[bf16_mi210] step  8300 | loss 2.3126 | best 2.2854 | lr 0.001 | sub_scale 0.0001 | elapsed 109.6s
+[bf16_mi210] step  8350 | loss 2.2976 | best 2.2801 | lr 0.001 | sub_scale 0.0001 | elapsed 110.2s
+[bf16_mi210] step  8400 | loss 2.2896 | best 2.2717 | lr 0.001 | sub_scale 0.0001 | elapsed 110.7s
+[bf16_mi210] step  8450 | loss 2.2786 | best 2.2654 | lr 0.001 | sub_scale 0.0001 | elapsed 111.3s
+[bf16_mi210] step  8500 | loss 2.3055 | best 2.2626 | lr 0.001 | sub_scale 0.0001 | elapsed 111.9s
+[bf16_mi210] step  8550 | loss 2.2676 | best 2.2482 | lr 0.001 | sub_scale 0.0001 | elapsed 112.4s
+[bf16_mi210] step  8600 | loss 2.2441 | best 2.2441 | lr 0.001 | sub_scale 0.0001 | elapsed 113.0s
+[bf16_mi210] step  8650 | loss 2.2602 | best 2.2441 | lr 0.001 | sub_scale 0.0001 | elapsed 113.6s
+[bf16_mi210] step  8700 | loss 2.2622 | best 2.2401 | lr 0.001 | sub_scale 0.0001 | elapsed 114.1s
+[bf16_mi210] step  8750 | loss 2.2392 | best 2.2284 | lr 0.001 | sub_scale 0.0001 | elapsed 114.7s
+[bf16_mi210] step  8800 | loss 2.2454 | best 2.2267 | lr 0.001 | sub_scale 0.0001 | elapsed 115.3s
+[bf16_mi210] step  8850 | loss 2.2389 | best 2.2122 | lr 0.001 | sub_scale 0.0001 | elapsed 115.8s
+[bf16_mi210] step  8900 | loss 2.2407 | best 2.2122 | lr 0.001 | sub_scale 0.0001 | elapsed 116.4s
+[bf16_mi210] step  8950 | loss 2.2179 | best 2.2122 | lr 0.001 | sub_scale 0.0001 | elapsed 117.0s
+[bf16_mi210] step  9000 | loss 2.2201 | best 2.2090 | lr 0.001 | sub_scale 0.0001 | elapsed 117.5s
+Saved ./test_results_9000_steps/results/result_vendor=bf16_mi210_prec=bf16_lr=0.001_sub=0.0001_seed=1.pkl
+ =====================================

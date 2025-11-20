@@ -9,14 +9,23 @@ from torch import nn
 # Import autocast and GradScaler
 # For PyTorch 2.1+, autocast is in torch.amp, but GradScaler is still in torch.cuda.amp
 # For older versions, both are in torch.cuda.amp
-try:
-    from torch.amp import autocast as autocast_new
-    USE_NEW_AUTOCAST = True
-except ImportError:
-    from torch.cuda.amp import autocast as autocast_old
-    USE_NEW_AUTOCAST = False
+# try:
+#     from torch.amp import autocast as autocast_new
+#     USE_NEW_AUTOCAST = True
+# except ImportError:
+#     from torch.cuda.amp import autocast as autocast_old
+#     USE_NEW_AUTOCAST = False
 
-from torch.cuda.amp import GradScaler
+# from torch.cuda.amp import GradScaler
+# from torch.amp import autocast, GradScaler 
+
+# try:
+#     # Newer PyTorch versions
+#     from torch.cuda.amp import autocast, GradScaler
+# except ImportError:
+#     # Fallback for ROCm or older builds
+#     from torch.amp import autocast
+#     from torch.cuda.amp import GradScaler
 
 from real_tiny_gpt_model import TinyGPTReal
 
@@ -80,7 +89,16 @@ def train_one_config(
 ):
     os.makedirs(output_dir, exist_ok=True)
 
+    print(" =====================================")
+    print("Torch version:", torch.__version__)
+    print("CUDA available:", torch.cuda.is_available())
+    print("GPU device_name ==>", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "None")
+    print(" =====================================")
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print("torch device = " + str(device) )
+    print("device.type = " + str(device.type) )
+
     torch.manual_seed(seed)
     if device.type == "cuda":
         print("============= hello CUDA ============")
@@ -111,14 +129,19 @@ def train_one_config(
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
     if use_amp:
         # GradScaler API is consistent across versions
-        scaler = GradScaler(enabled=True)
+        # scaler = GradScaler(enabled=True)
+        scaler = torch.amp.GradScaler(device="cuda")
     else:
         scaler = None
 
     device_name = (
         torch.cuda.get_device_name(0) if device.type == "cuda" else "cpu"
     )
-    # print("device = " + torch.cuda.get_device_name(0))
+    if device.type == "cuda":
+        device_name = torch.cuda.get_device_properties(0).name
+    else:
+        device_name = "cpu"
+    # print(" ========> device_name =", device_name)
     losses = []
     diverged = False
     best_loss = float("inf")
@@ -136,36 +159,22 @@ def train_one_config(
 
         optimizer.zero_grad(set_to_none=True)
 
-        # Use autocast with correct API
-        if use_amp and device.type == "cuda":
-            if USE_NEW_AUTOCAST:
-                # New API: device_type as first positional argument
-                with autocast_new('cuda', dtype=amp_dtype, enabled=True):
-                    logits = model(x)
-                    loss = F.cross_entropy(
-                        logits.view(-1, vocab_size),
-                        y.view(-1),
-                    )
-            else:
-                # Old API: device_type as keyword argument
-                with autocast_old(device_type='cuda', dtype=amp_dtype, enabled=True):
-                    logits = model(x)
-                    loss = F.cross_entropy(
-                        logits.view(-1, vocab_size),
-                        y.view(-1),
-                    )
+        if device.type == "cuda":
+            # NVIDIA or ROCm GPU
+            with torch.amp.autocast(device.type, dtype=amp_dtype, enabled=use_amp):
+                logits = model(x)
+                loss = F.cross_entropy(logits.view(-1, vocab_size), y.view(-1))
         else:
+            # CPU fallback
             logits = model(x)
-            loss = F.cross_entropy(
-                logits.view(-1, vocab_size),
-                y.view(-1),
-            )
+            loss = F.cross_entropy(logits.view(-1, vocab_size), y.view(-1))
 
-        if torch.isnan(loss) or torch.isinf(loss) or loss.item() > 100.0:
-            diverged = True
-            losses.append(float("nan"))
-            print(f"[{vendor}] step {step}: diverged (loss={loss.item():.3e})")
-            break
+
+            if torch.isnan(loss) or torch.isinf(loss) or loss.item() > 100.0:
+                diverged = True
+                losses.append(float("nan"))
+                print(f"[{vendor}] step {step}: diverged (loss={loss.item():.3e})")
+                break
 
         if use_amp and device.type == "cuda":
             scaler.scale(loss).backward()
