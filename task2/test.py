@@ -6,18 +6,6 @@ import torch.nn.functional as F
 from .attention import CustomSelfAttention
 
 
-def _batched_reference_matmul(a, b, transpose_b=False):
-    """
-    Compute a stable batched matmul reference by looping over the batch.
-
-    Some environments intermittently fail on the strided-batched cuBLAS path
-    used by `a @ b` for 3D tensors. This keeps GEMM verification robust.
-    """
-    if transpose_b:
-        b = b.transpose(-2, -1)
-    return torch.stack([a_i @ b_i for a_i, b_i in zip(a, b)], dim=0)
-
-
 def test_softmax():
     import custom_self_attention
 
@@ -50,35 +38,29 @@ def test_gemm():
     with torch.no_grad():
         a = torch.randn(batch_size, 10, 10).to(torch.float).to("cuda")
         b = torch.randn(batch_size, 10, 10).to(torch.float).to("cuda")
-        torch_out = _batched_reference_matmul(a, b)
+        torch_out = a @ b
         custom_out = custom_self_attention.test_batched_GEMM_NN(a, b)
-        torch.cuda.synchronize()
         assert torch.allclose(torch_out, custom_out, atol=1e-6)
-        torch_out = _batched_reference_matmul(a, b, transpose_b=True)
+        torch_out = a @ b.transpose(-2, -1)
         custom_out = custom_self_attention.test_batched_GEMM_NT(a, b)
-        torch.cuda.synchronize()
         assert torch.allclose(torch_out, custom_out, atol=1e-6)
 
         a = torch.randn(batch_size, 1000, 1000).to(torch.float).to("cuda")
         b = torch.randn(batch_size, 1000, 1000).to(torch.float).to("cuda")
-        torch_out = _batched_reference_matmul(a, b)
+        torch_out = a @ b
         custom_out = custom_self_attention.test_batched_GEMM_NN(a, b)
-        torch.cuda.synchronize()
         assert torch.allclose(torch_out, custom_out, atol=1e-6)
-        torch_out = _batched_reference_matmul(a, b, transpose_b=True)
+        torch_out = a @ b.transpose(-2, -1)
         custom_out = custom_self_attention.test_batched_GEMM_NT(a, b)
-        torch.cuda.synchronize()
         assert torch.allclose(torch_out, custom_out, atol=1e-6)
 
         # Non-square matrix test
         a = torch.randn(batch_size, 1000, 500).to(torch.float).to("cuda")
         b = torch.randn(batch_size, 500, 300).to(torch.float).to("cuda")
-        torch_out = _batched_reference_matmul(a, b)
+        torch_out = a @ b
         custom_out = custom_self_attention.test_batched_GEMM_NN(a, b)
-        torch.cuda.synchronize()
         assert torch.allclose(torch_out, custom_out, atol=1e-6)
         custom_out = custom_self_attention.test_batched_GEMM_NT(a, b.transpose(-2, -1))
-        torch.cuda.synchronize()
         assert torch.allclose(torch_out, custom_out, atol=1e-6)
 
         print("GEMM test passed!")
