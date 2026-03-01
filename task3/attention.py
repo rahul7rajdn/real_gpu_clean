@@ -40,10 +40,22 @@ class CustomFlashAttention(torch.nn.Module):
 
         batch_size, seq_len, _ = q.shape
 
-        # Split into heads: (B, H, N, D)
-        q = q.view(batch_size, seq_len, self.num_heads, self.head_dim).permute(0, 2, 1, 3)
-        k = k.view(batch_size, seq_len, self.num_heads, self.head_dim).permute(0, 2, 1, 3)
-        v = v.view(batch_size, seq_len, self.num_heads, self.head_dim).permute(0, 2, 1, 3)
+        def to_bhnd(x: torch.Tensor) -> torch.Tensor:
+            # Accept both common layouts and normalize to (B, H, N, D).
+            if x.dim() == 3 and x.shape == (batch_size, seq_len, self.hidden_dim):
+                return (
+                    x.view(batch_size, seq_len, self.num_heads, self.head_dim)
+                    .permute(0, 2, 1, 3)
+                    .contiguous()
+                )
+            if x.dim() == 3 and x.shape == (batch_size * self.num_heads, seq_len, self.head_dim):
+                return x.view(batch_size, self.num_heads, seq_len, self.head_dim).contiguous()
+            raise ValueError(f"Unexpected tensor shape for attention input: {tuple(x.shape)}")
+
+        # Normalize Q/K/V to (B, H, N, D).
+        q = to_bhnd(q)
+        k = to_bhnd(k)
+        v = to_bhnd(v)
 
         # Output tensor in (B, H, N, D).
         o = torch.zeros_like(q)
@@ -57,6 +69,10 @@ class CustomFlashAttention(torch.nn.Module):
                 q_bh = q[b, h]  # (N, D)
                 k_bh = k[b, h]  # (N, D)
                 v_bh = v[b, h]  # (N, D)
+                if q_bh.dim() != 2:
+                    raise RuntimeError(
+                        f"Expected q[b, h] to be 2D (N, D), got shape {tuple(q_bh.shape)}"
+                    )
 
                 for r_start in range(0, seq_len, T_r):
                     r_end = min(r_start + T_r, seq_len)
