@@ -40,94 +40,97 @@ class CustomFlashAttention(torch.nn.Module):
 
         batch_size, seq_len, _ = q.shape
 
-        # Reshape and flatten heads into shape (batch_size * num_heads, seq_len, head_dim)
-        q = (
-            q.view(batch_size, seq_len, self.num_heads, self.head_dim)
-            .permute(0, 2, 1, 3)
-            .reshape(batch_size * self.num_heads, seq_len, self.head_dim)
-        )
-        k = (
-            k.view(batch_size, seq_len, self.num_heads, self.head_dim)
-            .permute(0, 2, 1, 3)
-            .reshape(batch_size * self.num_heads, seq_len, self.head_dim)
-        )
-        v = (
-            v.view(batch_size, seq_len, self.num_heads, self.head_dim)
-            .permute(0, 2, 1, 3)
-            .reshape(batch_size * self.num_heads, seq_len, self.head_dim)
-        )
+        # Split into heads: (B, H, N, D)
+        q = q.view(batch_size, seq_len, self.num_heads, self.head_dim).permute(0, 2, 1, 3)
+        k = k.view(batch_size, seq_len, self.num_heads, self.head_dim).permute(0, 2, 1, 3)
+        v = v.view(batch_size, seq_len, self.num_heads, self.head_dim).permute(0, 2, 1, 3)
 
-        # Output and streaming softmax accumulators.
+        # Output tensor in (B, H, N, D).
         o = torch.zeros_like(q)
-        m = torch.full(
-            (batch_size * self.num_heads, seq_len),
-            float("-inf"),
-            device=q.device,
-            dtype=q.dtype,
-        )
-        l = torch.zeros(
-            (batch_size * self.num_heads, seq_len), device=q.device, dtype=q.dtype
-        )
 
         scale = 1.0 / math.sqrt(self.head_dim)
 
-        for c_start in range(0, seq_len, T_c):
-            c_end = min(c_start + T_c, seq_len)
-            k_j = k[:, c_start:c_end, :]
-            v_j = v[:, c_start:c_end, :]
+        # Algorithm-1 style loop structure:
+        # outer loop over (batch, head), then tiled KV loop, then tiled Q loop.
+        for b in range(batch_size):
+            for h in range(self.num_heads):
+                q_bh = q[b, h]  # (N, D)
+                k_bh = k[b, h]  # (N, D)
+                v_bh = v[b, h]  # (N, D)
 
-            if causal:
-                k_pos = torch.arange(c_start, c_end, device=q.device)
+                # Streaming softmax stats for this head.
+                m_bh = torch.full((seq_len,), float("-inf"), device=q.device, dtype=q.dtype)
+                l_bh = torch.zeros((seq_len,), device=q.device, dtype=q.dtype)
+                o_bh = torch.zeros((seq_len, self.head_dim), device=q.device, dtype=q.dtype)
 
-            for r_start in range(0, seq_len, T_r):
-                r_end = min(r_start + T_r, seq_len)
-                q_i = q[:, r_start:r_end, :]
-                o_i = o[:, r_start:r_end, :]
-                m_i = m[:, r_start:r_end]
-                l_i = l[:, r_start:r_end]
+                for c_start in range(0, seq_len, T_c):
+                    c_end = min(c_start + T_c, seq_len)
+                    k_j = k_bh[c_start:c_end, :]  # (Bc, D)
+                    v_j = v_bh[c_start:c_end, :]  # (Bc, D)
 
-                s_ij = torch.matmul(q_i, k_j.transpose(-2, -1)) * scale
+                    if causal:
+                        k_pos = torch.arange(c_start, c_end, device=q.device)
 
-                if causal:
-                    q_pos = torch.arange(r_start, r_end, device=q.device)
-                    causal_mask = k_pos.unsqueeze(0) > q_pos.unsqueeze(1)
-                    s_ij = s_ij.masked_fill(causal_mask.unsqueeze(0), float("-inf"))
+                    for r_start in range(0, seq_len, T_r):
+                        r_end = min(r_start + T_r, seq_len)
+                        q_i = q_bh[r_start:r_end, :]  # (Br, D)
+                        o_i = o_bh[r_start:r_end, :]  # (Br, D)
+                        m_i = m_bh[r_start:r_end]  # (Br,)
+                        l_i = l_bh[r_start:r_end]  # (Br,)
 
-                m_ij = s_ij.max(dim=-1).values
-                m_ij_safe = torch.where(
-                    torch.isfinite(m_ij), m_ij, torch.zeros_like(m_ij)
-                )
-                p_ij = torch.exp(s_ij - m_ij_safe.unsqueeze(-1))
-                l_ij = p_ij.sum(dim=-1)
+                        # Score block S_ij = Q_i @ K_j^T / sqrt(d)
+                        s_ij = (q_i @ k_j.transpose(-2, -1)) * scale  # (Br, Bc)
 
-                m_new = torch.maximum(m_i, m_ij)
-                finite_m_new = torch.isfinite(m_new)
-                alpha = torch.where(
-                    finite_m_new, torch.exp(m_i - m_new), torch.zeros_like(m_new)
-                )
-                beta = torch.where(
-                    finite_m_new, torch.exp(m_ij - m_new), torch.zeros_like(m_new)
-                )
-                l_new = alpha * l_i + beta * l_ij
+                        if causal:
+                            q_pos = torch.arange(r_start, r_end, device=q.device)
+                            causal_mask = k_pos.unsqueeze(0) > q_pos.unsqueeze(1)
+                            s_ij = s_ij.masked_fill(causal_mask, float("-inf"))
 
-                p_ij_v = torch.matmul(p_ij, v_j)
-                numer = (alpha * l_i).unsqueeze(-1) * o_i + beta.unsqueeze(-1) * p_ij_v
-                o_new = torch.where(
-                    l_new.unsqueeze(-1) > 0,
-                    numer / l_new.unsqueeze(-1),
-                    torch.zeros_like(numer),
-                )
+                        # Blockwise softmax stats.
+                        m_ij = s_ij.max(dim=-1).values  # (Br,)
+                        m_ij_safe = torch.where(torch.isfinite(m_ij), m_ij, torch.zeros_like(m_ij))
+                        p_ij = torch.exp(s_ij - m_ij_safe.unsqueeze(-1))
+                        p_ij = torch.where(
+                            torch.isfinite(m_ij).unsqueeze(-1),
+                            p_ij,
+                            torch.zeros_like(p_ij),
+                        )
+                        l_ij = p_ij.sum(dim=-1)  # (Br,)
 
-                o[:, r_start:r_end, :] = o_new
-                m[:, r_start:r_end] = m_new
-                l[:, r_start:r_end] = l_new
+                        # Online update:
+                        # m_new = max(m_i, m_ij)
+                        # l_new = exp(m_i-m_new)*l_i + exp(m_ij-m_new)*l_ij
+                        # O_new = diag(l_new)^-1 * (diag(exp(m_i-m_new) * l_i) O_i
+                        #         + diag(exp(m_ij-m_new)) (P_ij V_j))
+                        m_new = torch.maximum(m_i, m_ij)
+                        finite_m_new = torch.isfinite(m_new)
+                        alpha = torch.where(
+                            finite_m_new,
+                            torch.exp(m_i - m_new),
+                            torch.zeros_like(m_new),
+                        )
+                        beta = torch.where(
+                            finite_m_new,
+                            torch.exp(m_ij - m_new),
+                            torch.zeros_like(m_new),
+                        )
+                        l_new = alpha * l_i + beta * l_ij
+
+                        numer = (alpha * l_i).unsqueeze(-1) * o_i + beta.unsqueeze(-1) * (p_ij @ v_j)
+                        o_new = torch.where(
+                            (l_new > 0).unsqueeze(-1),
+                            numer / l_new.unsqueeze(-1),
+                            torch.zeros_like(numer),
+                        )
+
+                        o_bh[r_start:r_end, :] = o_new
+                        m_bh[r_start:r_end] = m_new
+                        l_bh[r_start:r_end] = l_new
+
+                o[b, h] = o_bh
 
         # Reshape back to (batch_size, seq_len, hidden_dim)
-        o = (
-            o.view(batch_size, self.num_heads, seq_len, self.head_dim)
-            .permute(0, 2, 1, 3)
-            .reshape(batch_size, seq_len, self.hidden_dim)
-        )
+        o = o.permute(0, 2, 1, 3).reshape(batch_size, seq_len, self.hidden_dim)
 
         return o
 
