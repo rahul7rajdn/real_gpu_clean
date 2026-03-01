@@ -1,8 +1,22 @@
 import torch
 import math
-import custom_flash_attention
-import custom_flash_attention_decode
 import torch.nn.functional as F
+
+try:
+    import custom_flash_attention
+except ModuleNotFoundError as exc:
+    raise ModuleNotFoundError(
+        "custom_flash_attention is not installed. Run `python -m task4.compile` "
+        "or `python -m task5.compile` in the same environment."
+    ) from exc
+
+try:
+    import custom_flash_attention_decode
+except ModuleNotFoundError as exc:
+    raise ModuleNotFoundError(
+        "custom_flash_attention_decode is not installed. Run `python -m task5.compile` "
+        "in the same environment, then retry."
+    ) from exc
 
 
 class CustomFlashAttention(torch.nn.Module):
