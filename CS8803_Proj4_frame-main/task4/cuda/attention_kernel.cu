@@ -8,6 +8,22 @@
 using namespace torch::indexing;
 
 // FlashAttention kernel
+__device__ __forceinline__ float warp_reduce_max(float val) {
+    #pragma unroll
+    for (int offset = 16; offset > 0; offset >>= 1) {
+        val = fmaxf(val, __shfl_down_sync(0xffffffff, val, offset));
+    }
+    return val;
+}
+
+__device__ __forceinline__ float warp_reduce_sum(float val) {
+    #pragma unroll
+    for (int offset = 16; offset > 0; offset >>= 1) {
+        val += __shfl_down_sync(0xffffffff, val, offset);
+    }
+    return val;
+}
+
 template <int B_r, int B_c>
 __global__ void flashattention_kernel(
     const float* __restrict__ q,
@@ -18,49 +34,43 @@ __global__ void flashattention_kernel(
     int head_dim,
     bool causal)
 {
+    static_assert(B_c <= 32, "This kernel assumes one warp covers one K/V tile row.");
+
     // Shared memory for tiles
     __shared__ float q_tile[B_r][128];  // Max head_dim = 128
     __shared__ float k_tile[B_c][128];
     __shared__ float v_tile[B_c][128];
-    __shared__ float o_tile[B_r][128];
     __shared__ float m_tile[B_r];
     __shared__ float l_tile[B_r];
-    __shared__ float scores[B_r][B_c];
     __shared__ float p[B_r][B_c];
 
     // ########################################################
 
-    const int tid = threadIdx.x;
+    const int tid = static_cast<int>(threadIdx.x);
+    const int warp_id = tid >> 5;   // threadIdx.x / 32
+    const int lane = tid & 31;      // threadIdx.x % 32
     const int bh_idx = blockIdx.y;
-    const int q_block_idx = blockIdx.x;
-    const int q_start = q_block_idx * B_r;
+    const int q_start = static_cast<int>(blockIdx.x) * B_r;
+    const int q_pos = q_start + warp_id;
     const float scale = rsqrtf(static_cast<float>(head_dim));
 
-    // Extra per-row shared state used by the online softmax update.
-    __shared__ float alpha_tile[B_r];
+    // Each lane accumulates up to 4 output elements (head_dim <= 128).
+    float o_reg[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 
-    // Load Q tile for this Q block.
-    for (int idx = tid; idx < B_r * head_dim; idx += blockDim.x) {
-        int r = idx / head_dim;
-        int d = idx % head_dim;
-        int q_pos = q_start + r;
-        if (q_pos < seq_len) {
-            int q_offset = (bh_idx * seq_len + q_pos) * head_dim + d;
-            q_tile[r][d] = q[q_offset];
-        } else {
-            q_tile[r][d] = 0.0f;
+    // Load and pre-scale one Q row per warp.
+    if (warp_id < B_r) {
+        for (int d = lane; d < head_dim; d += 32) {
+            float q_val = 0.0f;
+            if (q_pos < seq_len) {
+                int q_offset = (bh_idx * seq_len + q_pos) * head_dim + d;
+                q_val = q[q_offset];
+            }
+            q_tile[warp_id][d] = q_val * scale;
         }
-    }
-
-    // Initialize output accumulator and online-softmax statistics.
-    for (int idx = tid; idx < B_r * head_dim; idx += blockDim.x) {
-        int r = idx / head_dim;
-        int d = idx % head_dim;
-        o_tile[r][d] = 0.0f;
-    }
-    if (tid < B_r) {
-        m_tile[tid] = -INFINITY;
-        l_tile[tid] = 0.0f;
+        if (lane == 0) {
+            m_tile[warp_id] = -INFINITY;
+            l_tile[warp_id] = 0.0f;
+        }
     }
     __syncthreads();
 
@@ -69,7 +79,7 @@ __global__ void flashattention_kernel(
     for (int kv_block_idx = 0; kv_block_idx < num_kv_blocks; kv_block_idx++) {
         const int k_start = kv_block_idx * B_c;
 
-        // Load K/V tiles.
+        // Cooperatively load one K/V tile.
         for (int idx = tid; idx < B_c * head_dim; idx += blockDim.x) {
             int c = idx / head_dim;
             int d = idx % head_dim;
@@ -85,83 +95,89 @@ __global__ void flashattention_kernel(
         }
         __syncthreads();
 
-        // Compute S = QK^T for this tile (with scale + optional causal mask).
-        for (int idx = tid; idx < B_r * B_c; idx += blockDim.x) {
-            int r = idx / B_c;
-            int c = idx % B_c;
-            int q_pos = q_start + r;
-            int k_pos = k_start + c;
+        if (warp_id < B_r) {
+            const bool row_valid = (q_pos < seq_len);
 
+            // One lane computes one score in the current K/V tile.
             float score = -INFINITY;
-            if (q_pos < seq_len && k_pos < seq_len) {
-                float dot = 0.0f;
-                for (int d = 0; d < head_dim; d++) {
-                    dot += q_tile[r][d] * k_tile[c][d];
-                }
-                score = dot * scale;
-                if (causal && k_pos > q_pos) {
-                    score = -INFINITY;
+            if (row_valid && lane < B_c) {
+                int k_pos = k_start + lane;
+                if (k_pos < seq_len && (!causal || k_pos <= q_pos)) {
+                    float dot = 0.0f;
+                    if (head_dim == 128) {
+                        #pragma unroll
+                        for (int d = 0; d < 128; d++) {
+                            dot += q_tile[warp_id][d] * k_tile[lane][d];
+                        }
+                    } else {
+                        for (int d = 0; d < head_dim; d++) {
+                            dot += q_tile[warp_id][d] * k_tile[lane][d];
+                        }
+                    }
+                    score = dot;
                 }
             }
-            scores[r][c] = score;
-        }
-        __syncthreads();
 
-        // Update online-softmax stats and compute probabilities for this tile.
-        if (tid < B_r) {
-            int r = tid;
-            int q_pos = q_start + r;
+            float row_max = warp_reduce_max(score);
+            row_max = __shfl_sync(0xffffffff, row_max, 0);
 
-            if (q_pos < seq_len) {
-                float row_max = -INFINITY;
-                for (int c = 0; c < B_c; c++) {
-                    row_max = fmaxf(row_max, scores[r][c]);
+            float m_prev = m_tile[warp_id];
+            float l_prev = l_tile[warp_id];
+            float m_new = row_valid ? fmaxf(m_prev, row_max) : -INFINITY;
+
+            float p_val = 0.0f;
+            if (row_valid && isfinite(m_new)) {
+                p_val = expf(score - m_new);
+            }
+            float row_sum = warp_reduce_sum(p_val);
+            row_sum = __shfl_sync(0xffffffff, row_sum, 0);
+
+            float alpha = 0.0f;
+            if (row_valid) {
+                alpha = isfinite(m_new) ? expf(m_prev - m_new) : 0.0f;
+                if (lane == 0) {
+                    l_tile[warp_id] = alpha * l_prev + row_sum;
+                    m_tile[warp_id] = m_new;
                 }
+            }
 
-                float m_prev = m_tile[r];
-                float m_new = fmaxf(m_prev, row_max);
-                float alpha = expf(m_prev - m_new);
+            if (lane < B_c) {
+                p[warp_id][lane] = p_val;
+            }
+            __syncwarp();
 
-                float row_sum = 0.0f;
-                for (int c = 0; c < B_c; c++) {
-                    float prob = expf(scores[r][c] - m_new);
-                    p[r][c] = prob;
-                    row_sum += prob;
+            // Compute/update output row in registers.
+            if (row_valid) {
+                #pragma unroll
+                for (int i = 0; i < 4; i++) {
+                    int d = lane + i * 32;
+                    if (d < head_dim) {
+                        float pv = 0.0f;
+                        #pragma unroll
+                        for (int c = 0; c < B_c; c++) {
+                            pv += p[warp_id][c] * v_tile[c][d];
+                        }
+                        o_reg[i] = alpha * o_reg[i] + pv;
+                    }
                 }
-
-                alpha_tile[r] = alpha;
-                l_tile[r] = alpha * l_tile[r] + row_sum;
-                m_tile[r] = m_new;
-            } else {
-                alpha_tile[r] = 0.0f;
             }
         }
-        __syncthreads();
 
-        // Update output accumulator: O = alpha * O + P @ V
-        for (int idx = tid; idx < B_r * head_dim; idx += blockDim.x) {
-            int r = idx / head_dim;
-            int d = idx % head_dim;
-            int q_pos = q_start + r;
-            if (q_pos < seq_len) {
-                float pv = 0.0f;
-                for (int c = 0; c < B_c; c++) {
-                    pv += p[r][c] * v_tile[c][d];
-                }
-                o_tile[r][d] = alpha_tile[r] * o_tile[r][d] + pv;
-            }
-        }
+        // Ensure all warps are done reading this tile before overwriting it.
         __syncthreads();
     }
 
-    // Normalize by L and write output.
-    for (int idx = tid; idx < B_r * head_dim; idx += blockDim.x) {
-        int r = idx / head_dim;
-        int d = idx % head_dim;
-        int q_pos = q_start + r;
+    if (warp_id < B_r) {
         if (q_pos < seq_len) {
-            int out_offset = (bh_idx * seq_len + q_pos) * head_dim + d;
-            out[out_offset] = o_tile[r][d] / l_tile[r];
+            float inv_l = 1.0f / l_tile[warp_id];
+            int out_offset = (bh_idx * seq_len + q_pos) * head_dim;
+            #pragma unroll
+            for (int i = 0; i < 4; i++) {
+                int d = lane + i * 32;
+                if (d < head_dim) {
+                    out[out_offset + d] = o_reg[i] * inv_l;
+                }
+            }
         }
     }
 
@@ -196,14 +212,22 @@ torch::Tensor custom_flash_attention(torch::Tensor q, torch::Tensor k, torch::Te
     
     TORCH_CHECK(head_dim <= 128, "head_dim must be <= 128");
 
-    const int threads_per_block = 256;
-    dim3 threads(threads_per_block);
-
-    // Tune tile sizes: larger K/V tile helps long-sequence throughput while
-    // staying under static shared-memory constraints on H100.
+    // Warp-per-row launch configuration:
+    // blockDim.x = B_r * 32 (one warp per Q row).
     if (seq_len >= 1024) {
-        dim3 blocks((seq_len + 8 - 1) / 8, batch_size * num_heads);
-        flashattention_kernel<8, 32><<<blocks, threads>>>(
+        dim3 blocks((seq_len + 24 - 1) / 24, batch_size * num_heads);
+        flashattention_kernel<24, 32><<<blocks, 24 * 32>>>(
+            q_bh.data_ptr<float>(),
+            k_bh.data_ptr<float>(),
+            v_bh.data_ptr<float>(),
+            out_bh.data_ptr<float>(),
+            seq_len,
+            head_dim,
+            causal
+        );
+    } else if (seq_len >= 256) {
+        dim3 blocks((seq_len + 16 - 1) / 16, batch_size * num_heads);
+        flashattention_kernel<16, 32><<<blocks, 16 * 32>>>(
             q_bh.data_ptr<float>(),
             k_bh.data_ptr<float>(),
             v_bh.data_ptr<float>(),
@@ -213,8 +237,8 @@ torch::Tensor custom_flash_attention(torch::Tensor q, torch::Tensor k, torch::Te
             causal
         );
     } else {
-        dim3 blocks((seq_len + 16 - 1) / 16, batch_size * num_heads);
-        flashattention_kernel<16, 16><<<blocks, threads>>>(
+        dim3 blocks((seq_len + 8 - 1) / 8, batch_size * num_heads);
+        flashattention_kernel<8, 32><<<blocks, 8 * 32>>>(
             q_bh.data_ptr<float>(),
             k_bh.data_ptr<float>(),
             v_bh.data_ptr<float>(),
